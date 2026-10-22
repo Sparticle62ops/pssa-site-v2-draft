@@ -1054,7 +1054,7 @@
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="#top" aria-label="PSSA - Plastic State-Space Architecture, back to top">
-      <span class="brand-orb" aria-hidden="true"></span>
+      <img class="brand-orb" src="assets/pssa-logo-128.png" alt="" width="26" height="26" style="border-radius:50%;object-fit:cover;display:block">
       <span class="brand-text">
         <span class="brand-name">PSSA</span>
         <span class="brand-sep" aria-hidden="true">-</span>
@@ -1066,7 +1066,7 @@
       <a href="#how">How It Works</a>
       <a href="technical.html">Deep Dive</a>
       <a href="#results">Results</a>
-      <a class="nav-ext" href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer">GitHub <span class="nav-arrow" aria-hidden="true">↗</span></a>
+      <a href="#get">Resources</a>       <a class="nav-ext" href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer">GitHub <span class="nav-arrow" aria-hidden="true">↗</span></a>
     </nav>
   </div>
   <span class="scroll-progress" aria-hidden="true" data-scroll-progress></span>
@@ -1780,7 +1780,40 @@
     </div>
   </section>
 
-  <section class="section" id="get" aria-labelledby="get-title">
+  
+    <section class="section" id="build" aria-labelledby="build-title">
+     <div class="wrap">
+      <div class="section-head split reveal">
+        <div>
+          <p class="section-kicker">04 · Under the hood</p>
+          <h2 id="build-title">The build, in numbers.</h2>
+        </div>
+        <div>
+          <p class="section-lede">Every figure here is taken from the repository configuration and logs. Nothing is rounded up to sound bigger.</p>
+        </div>
+      </div>
+      <div class="specbox reveal" style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:26px">
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Parameters</span><strong style="font-size:1.15rem;color:var(--ice-bright)">1,544,704</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Latent width</span><strong style="font-size:1.15rem;color:var(--ice-bright)">256</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">State channels</span><strong style="font-size:1.15rem;color:var(--ice-bright)">16</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Vocabulary</span><strong style="font-size:1.15rem;color:var(--ice-bright)">2,048 BPE</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Episodic slots</span><strong style="font-size:1.15rem;color:var(--ice-bright)">512 · 32-d keys, 256-d values</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Training corpus</span><strong style="font-size:1.15rem;color:var(--ice-bright)">12.7M WikiText-103 tokens</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Horizon</span><strong style="font-size:1.15rem;color:var(--ice-bright)">30,000 updates, cosine</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Held-out eval</span><strong style="font-size:1.15rem;color:var(--ice-bright)">198,939 tokens</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Hardware</span><strong style="font-size:1.15rem;color:var(--ice-bright)">One Tesla T4</strong></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><span style="display:block;font-size:.72rem;text-transform:uppercase;letter-spacing:.14em;color:var(--faint)">Implementation</span><strong style="font-size:1.15rem;color:var(--ice-bright)">Pure Rust, no ML framework</strong></div>
+      </div>
+      <div class="faq reveal" style="margin-top:34px;display:grid;gap:14px;max-width:760px">
+        <h3 style="margin:0;font-size:1.05rem">Questions people actually ask</h3>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><strong style="color:var(--ice-bright)">Why no attention?</strong><p style="margin:6px 0 0;color:var(--ink-soft);line-height:1.6;font-size:.95rem">Attention costs grow with context length. PSSA carries a fixed-size state, reads a bounded memory with an exact full scan, and writes with a round-robin slot policy, so per-token cost stays flat no matter how far the context reaches back.</p></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><strong style="color:var(--ice-bright)">Is this a transformer replacement?</strong><p style="margin:6px 0 0;color:var(--ink-soft);line-height:1.6;font-size:.95rem">No. It is a different accounting of context, tested at prototype scale against a parameter-matched baseline. The comparison is deliberately narrow and the limits are written down.</p></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><strong style="color:var(--ice-bright)">What can it not do?</strong><p style="margin:6px 0 0;color:var(--ink-soft);line-height:1.6;font-size:.95rem">At 1.5M parameters, text quality is poor for both PSSA and the baseline. One seed, one corpus, no memory-bank ablation yet. Those are the honest edges of the result.</p></div>
+        <div style="padding:16px 18px;border:1px solid var(--line);border-radius:12px;background:var(--panel)"><strong style="color:var(--ice-bright)">Where do the numbers come from?</strong><p style="margin:6px 0 0;color:var(--ink-soft);line-height:1.6;font-size:.95rem">From the repository: the training logs, the 64-checkpoint loss series in loss.csv, and the evaluation scripts that produced the held-out figures. Re-run them and you get the same table.</p></div>
+      </div>
+     </div>
+    </section>
+<section class="section" id="get" aria-labelledby="get-title">
     <div class="wrap">
       <div class="section-head split reveal">
         <div>
@@ -1806,25 +1839,7 @@
         </a>
 
         <a class="resource glass reveal" href="https://huggingface.co/sparticle62/pssa" target="_blank" rel="noopener noreferrer" aria-label="PSSA weights on Hugging Face, opens in a new tab">
-          <span class="resource-icon" aria-hidden="true">
-            <svg viewBox="0 0 24 24" fill="currentColor" focusable="false">
-              <defs>
-                <mask id="hfFaceHome">
-                  <rect width="24" height="24" fill="#fff"/>
-                  <circle cx="9.35" cy="10" r=".95" fill="#000"/>
-                  <circle cx="14.65" cy="10" r=".95" fill="#000"/>
-                  <path d="M9.4 13.1c.72.8 1.56 1.2 2.6 1.2s1.88-.4 2.6-1.2" fill="none" stroke="#000" stroke-width="1.3" stroke-linecap="round"/>
-                  <path d="M3.1 9.6v2.7M4.8 9.2v3.3M19.2 9.2v3.3M20.9 9.6v2.7" stroke="#000" stroke-width=".9" stroke-linecap="round"/>
-                </mask>
-              </defs>
-              <g mask="url(#hfFaceHome)">
-                <circle cx="12" cy="10.8" r="6.7"/>
-                <path d="M2.1 11.1c.35-1.28 1.55-2 2.8-1.65 1.2.34 1.93 1.52 1.63 2.77l-.72 3c-.3 1.22-1.5 1.95-2.72 1.65-1.24-.3-1.98-1.5-1.67-2.74l.68-3.03Z"/>
-                <path d="M21.9 11.1c-.35-1.28-1.55-2-2.8-1.65-1.2.34-1.93 1.52-1.63 2.77l.72 3c.3 1.22 1.5 1.95 2.72 1.65 1.24-.3 1.98-1.5 1.67-2.74l-.68-3.03Z"/>
-                <path d="M7.9 15.7c1.2.8 2.6 1.25 4.1 1.25s2.9-.45 4.1-1.25l.5 2.15c.24.98-.36 1.98-1.35 2.2-.6.14-1.22-.02-1.68-.44-.98.63-2.05.95-3.17.95s-2.19-.32-3.17-.95c-.46.42-1.08.58-1.68.44-.99-.22-1.59-1.22-1.35-2.2l.5-2.15Z"/>
-              </g>
-            </svg>
-          </span>
+          <span class="resource-icon" aria-hidden="true">🤗</span>
           <div class="resource-copy">
             <h3>Weights &amp; model card</h3>
             <span class="resource-handle">huggingface.co/sparticle62/pssa</span>
@@ -1849,14 +1864,25 @@
         </a>
       </div>
     </div>
-  </section>
+  
+        <div class="support-wrap reveal" id="support" style="margin-top:34px;padding:28px;border:1px solid var(--line);border-radius:16px;background:var(--panel)">
+          <h3 style="font-size:1.25rem;letter-spacing:-.01em;margin:0 0 8px">Support PSSA</h3>
+          <p style="color:var(--ink-soft);max-width:62ch;line-height:1.65;margin:0 0 18px;font-size:.98rem">PSSA is built by one independent researcher. GPU time is the bottleneck. The fastest free helps are a star and a share; everything below goes straight into compute and checkpoints.</p>
+          <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:12px">
+            <a style="display:block;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-decoration:none" href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer"><strong style="color:var(--ice-bright)">Star the repo</strong><br><span style="color:var(--muted);font-size:.88rem;line-height:1.5">Free, and it puts the work in front of more people.</span></a>
+            <a style="display:block;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-decoration:none" href="#" data-donate="kofi"><strong style="color:var(--ice-bright)">Ko-fi</strong><br><span style="color:var(--muted);font-size:.88rem;line-height:1.5">One-off support. Link pending.</span></a>
+            <a style="display:block;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-decoration:none" href="#" data-donate="sponsors"><strong style="color:var(--ice-bright)">GitHub Sponsors</strong><br><span style="color:var(--muted);font-size:.88rem;line-height:1.5">Recurring support. Link pending.</span></a>
+            <a style="display:block;padding:16px;border:1px solid var(--line);border-radius:12px;background:var(--panel-2);text-decoration:none" href="#" data-donate="crypto"><strong style="color:var(--ice-bright)">Crypto</strong><br><span style="color:var(--muted);font-size:.88rem;line-height:1.5">Direct, no platform cut. Address pending.</span></a>
+          </div>
+        </div>
+</section>
 </main>
 
 <footer class="site-footer">
   <div class="wrap">
     <div class="footer-top">
       <div class="footer-brand">
-        <span class="brand-orb" aria-hidden="true"></span>
+        <img class="brand-orb" src="assets/pssa-logo-128.png" alt="" width="26" height="26" style="border-radius:50%;object-fit:cover;display:block">
         <span class="footer-wordmark"><strong>PSSA</strong><span>- Plastic State-Space Architecture</span></span>
       </div>
       <nav class="footer-nav" aria-label="Footer">
