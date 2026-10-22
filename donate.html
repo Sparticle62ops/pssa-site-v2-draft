@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Support PSSA - Plastic State-Space Architecture</title>
+<meta name="description" content="Support PSSA: Solana tips fund GPU time and checkpoints. Free ways to help too.">
+<style>
+  :root{color-scheme:dark;--bg:#04070c;--panel:#0a111a;--panel-2:#0c1621;--ink:#f2f7fc;--ink-soft:#c8d7e6;--muted:#93a7ba;--faint:#64798d;--line:rgba(187,222,255,.11);--ice-bright:#eaf7ff;--ice:#bfe4ff;--ice-mid:#86c4ee;--ice-dim:#5c89ab;--sans:-apple-system,BlinkMacSystemFont,"Segoe UI","Helvetica Neue",Arial,sans-serif}
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{background:radial-gradient(1100px 500px at 50% -180px,rgba(143,205,250,.09),transparent 70%),var(--bg);color:var(--ink);font-family:var(--sans);min-height:100vh}
+  .wrap{max-width:960px;margin:0 auto;padding:0 22px}
+  header.site{position:sticky;top:0;z-index:20;background:rgba(4,7,12,.74);backdrop-filter:blur(18px) saturate(1.3);border-bottom:1px solid transparent}
+  .site-in{display:flex;align-items:center;justify-content:space-between;gap:16px;padding:14px 22px;max-width:1200px;margin:0 auto}
+  .brand{display:inline-flex;align-items:center;gap:12px;text-decoration:none;color:var(--ink)}
+  .brand-orb{width:26px;height:26px;border-radius:50%;object-fit:cover;display:block}
+  .brand-name{font-weight:750;letter-spacing:.045em;color:var(--ice-bright)}
+  .brand-sep{color:var(--faint)}
+  .brand-sub{color:var(--ink-soft);font-weight:500}
+  nav.primary-nav{display:flex;gap:22px;font-size:12.5px}
+  nav.primary-nav a{color:var(--muted);text-decoration:none;letter-spacing:.02em}
+  nav.primary-nav a:hover{color:var(--ice-bright)}
+  h1{font-size:clamp(1.9rem,4.5vw,2.9rem);letter-spacing:-.02em;margin:64px 0 14px}
+  .lede{color:var(--ink-soft);max-width:62ch;line-height:1.65;font-size:1.02rem}
+  .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:12px;margin-top:34px}
+  .card{padding:20px 22px;border:1px solid var(--line);border-radius:14px;background:var(--panel)}
+  .card h3{font-size:1.02rem;color:var(--ice-bright);margin-bottom:8px}
+  .card p{color:var(--muted);font-size:.9rem;line-height:1.6}
+  .card.pending{opacity:.75}
+  .badge{display:inline-block;font-size:.62rem;text-transform:uppercase;letter-spacing:.16em;color:var(--ice-mid);border:1px solid var(--line);border-radius:99px;padding:3px 10px;margin-bottom:12px}
+  .addr{font-family:ui-monospace,SFMono-Regular,Menlo,monospace;font-size:.8rem;color:var(--ice);background:var(--panel-2);border:1px solid var(--line);border-radius:10px;padding:12px 14px;word-break:break-all;margin:12px 0;line-height:1.5}
+  .btn{display:inline-block;background:var(--ice-bright);color:#04121d;font-weight:650;font-size:.85rem;border:0;border-radius:10px;padding:9px 16px;cursor:pointer;text-decoration:none}
+  .btn.ghost{background:transparent;color:var(--ice);border:1px solid var(--line)}
+  .row{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+  footer{margin-top:70px;border-top:1px solid var(--line);padding:26px 22px;text-align:center;color:var(--faint);font-size:.8rem}
+  footer a{color:var(--ice-dim);text-decoration:none}
+</style>
+</head>
+<body>
+<header class="site"><div class="site-in">
+  <a class="brand" href="index.html" aria-label="PSSA home">
+    <img class="brand-orb" src="assets/pssa-logo-128.png" alt="" width="26" height="26">
+    <span class="brand-name">PSSA</span><span class="brand-sep"> - </span><span class="brand-sub">Plastic State-Space Architecture</span>
+  </a>
+  <nav class="primary-nav" aria-label="Primary">
+    <a href="index.html#overview">Overview</a><a href="index.html#how">How It Works</a><a href="technical.html">Deep Dive</a><a href="index.html#results">Results</a><a href="index.html#get">Resources</a>
+  </nav>
+</div></header>
+<main class="wrap">
+  <h1>Support PSSA.</h1>
+  <p class="lede">PSSA is independent research: one person, one used GPU market, pure Rust, no lab behind it. Every donated dollar goes straight to compute time and checkpoints. If you would rather help for free, the cards at the bottom matter just as much.</p>
+  <div class="grid">
+    <div class="card">
+      <span class="badge">Live</span>
+      <h3>Solana (SOL)</h3>
+      <p>Direct tip, no platform cut, no account needed. This is the same address published in the repository README.</p>
+      <div class="addr" id="sol-addr">4XPZ9uAa2BMoth6msoHRxTWL4mUrMfq3LGrxbAGja96h</div>
+      <div class="row">
+        <button class="btn" id="copy-sol" type="button">Copy address</button>
+        <a class="btn ghost" href="https://solscan.io/account/4XPZ9uAa2BMoth6msoHRxTWL4mUrMfq3LGrxbAGja96h" target="_blank" rel="noopener noreferrer">View on Solscan</a>
+      </div>
+    </div>
+    <div class="card pending">
+      <span class="badge">Coming soon</span>
+      <h3>Ko-fi</h3>
+      <p>A one-off tip-jar page. Payouts go through PayPal, which needs an adult account holder, so this activates once that is set up.</p>
+    </div>
+    <div class="card pending">
+      <span class="badge">Coming soon</span>
+      <h3>GitHub Sponsors</h3>
+      <p>Recurring support through GitHub. It pays out via Stripe, which also needs an adult account holder for now.</p>
+    </div>
+  </div>
+  <div class="grid">
+    <a class="card" style="text-decoration:none" href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer">
+      <h3>Star the repo</h3><p>Free, takes two seconds, and puts the work in front of more people.</p>
+    </a>
+    <a class="card" style="text-decoration:none" href="https://discord.gg/9sqfKeqWYF" target="_blank" rel="noopener noreferrer">
+      <h3>Join the Discord</h3><p>Ask questions, reproduce results, and push the research forward with us.</p>
+    </a>
+    <a class="card" style="text-decoration:none" href="https://huggingface.co/sparticle62/pssa" target="_blank" rel="noopener noreferrer">
+      <h3>Use the checkpoints</h3><p>Downloading, testing, and citing the model is the support that compounds.</p>
+    </a>
+  </div>
+</main>
+<footer>Part of <a href="index.html">pssa-site</a> · <a href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer">GitHub</a> · <a href="technical.html">Deep dive</a></footer>
+<script>
+(function(){
+  var b = document.getElementById('copy-sol');
+  if (b) b.addEventListener('click', function(){
+    var a = document.getElementById('sol-addr').textContent.trim();
+    function done(){ var t = b.textContent; b.textContent = 'Copied'; setTimeout(function(){ b.textContent = t; }, 1600); }
+    if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(a).then(done, done);
+    else { var i = document.createElement('textarea'); i.value = a; document.body.appendChild(i); i.select(); try{document.execCommand('copy');}catch(e){} document.body.removeChild(i); done(); }
+  });
+})();
+</script>
+</body>
+</html>
