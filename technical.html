@@ -5,6 +5,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>PSSA - Technical Deep Dive</title>
 <meta name="description" content="The full technical detail behind PSSA: the selective recurrence, the 512-slot hyperbolic memory, plasticity by ridge consolidation, and the verification harness.">
+<script>document.documentElement.classList.add('js');</script>
 <style>
   :root{
     color-scheme: dark;
@@ -1041,50 +1042,77 @@
   }
 
 
-/* ---- display math ---- */
-.math{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.28em;font-family:Georgia,'Times New Roman',serif;font-style:italic;font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1.35;padding:1.5rem 1rem;margin:1.6rem 0;background:linear-gradient(180deg,rgba(191,228,255,.05),rgba(191,228,255,.015));border:1px solid rgba(191,228,255,.12);border-radius:14px;text-align:center}
-.math .rm{font-style:normal}
-.math .op{font-style:normal;font-size:.82em;color:var(--ice-mid);letter-spacing:.03em}
-.math .big{font-style:normal;font-size:1.5em;line-height:1}
-.math .par{font-size:1.6em;font-weight:300;color:var(--ice-dim)}
-.frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.25}
-.frac .num{border-bottom:1px solid var(--ice-dim);padding:0 .4em .12em}
-.frac .den{padding:.12em .4em 0}
-sub,sup{font-size:.6em;font-style:italic}
-.math-defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.6rem 2rem;margin:-.4rem 0 1.6rem;padding:1rem 1.2rem;border:1px solid rgba(191,228,255,.09);border-radius:12px;background:rgba(191,228,255,.02)}
-.math-defs div{font-size:.86rem;color:var(--muted)}
-.math-defs b{color:var(--ice);font-family:Georgia,serif;font-style:italic;font-weight:600}
-.spec-table{width:100%;border-collapse:collapse;margin:1.2rem 0}
-.spec-table th,.spec-table td{text-align:left;padding:.62rem .8rem;border-bottom:1px solid rgba(191,228,255,.09);font-size:.92rem}
-.spec-table th{color:var(--muted);font-weight:500;font-variant:all-small-caps;letter-spacing:.06em}
-.spec-table td:last-child{color:var(--ink-soft)}
-.spec-table td b{color:var(--ice);font-weight:600}
-.bench-bar{position:relative;height:10px;border-radius:6px;background:rgba(191,228,255,.08);overflow:hidden;margin:.45rem 0 .2rem;min-width:120px}
-.bench-bar i{position:absolute;inset:0;width:0;border-radius:6px;background:linear-gradient(90deg,var(--ice-dim),var(--ice-bright));transition:width 1.1s cubic-bezier(.2,.7,.2,1)}
-tr.in .bench-bar i{width:var(--w)}
-.loss-svg{width:100%;height:auto;display:block}
-.loss-grid{stroke:rgba(191,228,255,.08)}
-.loss-tick{fill:var(--faint);font-size:11px}
-.loss-line{fill:none;stroke:var(--ice-bright);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2600;stroke-dashoffset:2600;transition:stroke-dashoffset 2.6s cubic-bezier(.3,.6,.2,1)}
-.in .loss-line{stroke-dashoffset:0}
-.loss-dot{fill:rgba(191,228,255,.55);opacity:0;transition:opacity .3s}
-.in .loss-dot{opacity:1}
-.loss-dot:hover{fill:#fff}
-.loss-tip{position:absolute;pointer-events:none;background:#0a111a;border:1px solid rgba(191,228,255,.25);color:var(--ice);font-size:.78rem;padding:.4rem .6rem;border-radius:8px;opacity:0;transition:opacity .15s;white-space:nowrap;transform:translate(-50%,-130%);font-style:normal}
-.chart-wrap{position:relative;border:1px solid rgba(191,228,255,.12);border-radius:16px;padding:1rem;background:rgba(191,228,255,.02);margin:1.4rem 0}
-.dd-hero{padding:5.5rem 0 3rem;text-align:left}
-.section{padding:3.4rem 0;border-top:1px solid rgba(191,228,255,.08)}
-.kicker{color:var(--ice-mid);font-variant:all-small-caps;letter-spacing:.14em;font-size:.95rem}
-.section h2{font-size:clamp(1.7rem,3.6vw,2.4rem);margin:.3rem 0 1rem;letter-spacing:-.01em}
-.lead{color:var(--ink-soft);max-width:62ch;font-size:1.02rem;line-height:1.65}
-.note{color:var(--muted);font-size:.85rem;margin-top:.5rem}
-details.datatable{margin:1rem 0 0;color:var(--ink-soft)}
-details.datatable summary{cursor:pointer;color:var(--ice-mid);font-size:.85rem}
-details.datatable table{margin-top:.8rem}
-@media (prefers-reduced-motion:reduce){.loss-line{stroke-dashoffset:0!important}.bench-bar i{transition:none}.loss-dot{opacity:.55}}
+  /* ---- technical deep dive components ---- */
+  .technical-hero{padding:clamp(64px,9vw,118px) 0 clamp(48px,7vw,88px)}
+  .technical-hero-copy{max-width:900px}
+  .technical-hero h1{margin:26px 0 0;font-family:var(--display);font-size:clamp(2.82rem,5.25vw,5.1rem);line-height:1.015;letter-spacing:-.046em;font-weight:600;color:var(--ink)}
+  .technical-hero h1 em{font-family:var(--serif);font-style:italic;font-weight:400;letter-spacing:-.025em;background:linear-gradient(100deg,#f7fcff 0%,#c8eaff 48%,#80bde7 100%);-webkit-background-clip:text;background-clip:text;color:transparent;padding-right:.05em}
+  .technical-hero .hero-lede{margin-top:27px;max-width:68ch;color:var(--ink-soft);font-size:clamp(1.01rem,1.3vw,1.13rem);line-height:1.74}
+  .technical-note{max-width:760px;margin-top:22px;color:var(--muted);font-size:.85rem;line-height:1.6}
+  .technical-section .section-head{max-width:none}
+  .technical-section .section-head h2{max-width:18ch}
+  .technical-section .section-head .section-lede{max-width:58ch}
+  .technical-body{margin-top:clamp(32px,4.5vw,54px)}
+
+  .math{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:.28em;font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,2.4vw,1.5rem);line-height:1.35;padding:1.35rem clamp(1rem,3vw,2rem);margin:0 0 13px;background:linear-gradient(180deg,rgba(18,31,45,.55),rgba(6,12,19,.54));border:1px solid var(--line);border-radius:14px;text-align:center;box-shadow:inset 0 1px 0 rgba(225,245,255,.04)}
+  .math .rm{font-style:normal}
+  .math .op{font-style:normal;font-size:.82em;color:var(--ice-mid);letter-spacing:.03em}
+  .math .big{font-style:normal;font-size:1.5em;line-height:1}
+  .math .par{font-size:1.6em;font-weight:300;color:var(--ice-dim)}
+  .frac{display:inline-flex;flex-direction:column;vertical-align:middle;text-align:center;line-height:1.25}
+  .frac .num{border-bottom:1px solid var(--ice-dim);padding:0 .4em .12em}
+  .frac .den{padding:.12em .4em 0}
+  .math sub,.math sup{font-size:.6em;font-style:italic}
+  .math-defs{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:.75rem 2rem;margin:0 0 22px;padding:1rem 1.2rem;border:1px solid var(--line);border-radius:12px;background:rgba(145,205,255,.035)}
+  .math-defs div{font-size:.86rem;color:var(--muted)}
+  .math-defs b{color:var(--ice);font-family:var(--serif);font-style:italic;font-weight:600}
+  .technical-panel{border-radius:20px}
+  .spec-table{width:100%;border-collapse:collapse;margin:0}
+  .spec-table th,.spec-table td{text-align:left;padding:.78rem clamp(.8rem,2vw,1.2rem);border-bottom:1px solid var(--line);font-size:.92rem}
+  .spec-table tr:last-child th,.spec-table tr:last-child td{border-bottom:0}
+  .spec-table th{color:var(--muted);font-weight:550;font-size:.78rem;line-height:1.4;letter-spacing:.11em;text-transform:uppercase}
+  .spec-table td:last-child{color:var(--ink-soft)}
+  .spec-table td b{color:var(--ice);font-weight:600}
+  .technical-panel + .technical-note{margin-top:16px}
+  .bench-bar{position:relative;height:6px;border-radius:99px;background:rgba(191,228,255,.08);overflow:hidden;margin:.45rem 0 .2rem;min-width:120px}
+  .bench-bar i{position:absolute;inset:0;width:0;border-radius:inherit;background:linear-gradient(90deg,var(--ice-dim),var(--ice-bright));transition:width 1.1s var(--ease)}
+  tr.in .bench-bar i{width:var(--w)}
+  .loss-svg{width:100%;height:auto;display:block}
+  .loss-grid{stroke:rgba(191,228,255,.08)}
+  .loss-tick{fill:var(--faint);font-size:11px}
+  .loss-line{fill:none;stroke:var(--ice-bright);stroke-width:2.4;stroke-linecap:round;stroke-linejoin:round;stroke-dasharray:2600;stroke-dashoffset:2600;transition:stroke-dashoffset 2.6s var(--ease)}
+  .in .loss-line{stroke-dashoffset:0}
+  .loss-dot{fill:rgba(191,228,255,.55);opacity:0;transition:opacity .3s}
+  .in .loss-dot{opacity:1}
+  .loss-dot:hover{fill:#fff}
+  .loss-tip{position:absolute;pointer-events:none;background:var(--panel);border:1px solid var(--line-strong);color:var(--ice);font-size:.78rem;padding:.4rem .6rem;border-radius:8px;opacity:0;transition:opacity .15s;white-space:nowrap;transform:translate(-50%,-130%);font-style:normal}
+  .chart-wrap{position:relative;border:1px solid var(--line);border-radius:20px;padding:clamp(1rem,2.5vw,1.5rem);background:linear-gradient(180deg,rgba(16,27,40,.72),rgba(6,12,19,.78));margin:0;box-shadow:inset 0 1px 0 rgba(225,245,255,.055),0 24px 60px rgba(0,0,0,.16)}
+  .chart-wrap .spec-table{margin-top:12px}
+  details.datatable{margin:14px 0 0;padding-top:12px;border-top:1px solid var(--line);color:var(--ink-soft)}
+  details.datatable summary{cursor:pointer;color:var(--muted);font-size:.78rem;transition:color .2s ease}
+  details.datatable summary:hover{color:var(--ice-bright)}
+  details.datatable table{margin-top:12px}
+  @media (max-width:720px){
+    .technical-hero h1{font-size:clamp(2.55rem,10.6vw,3.7rem)}
+    .technical-hero .hero-lede{font-size:1rem}
+    .technical-section .section-head.split{gap:20px}
+    .technical-section .section-head h2{max-width:20ch}
+    .spec-table{min-width:620px}
+    .technical-panel{overflow-x:auto}
+    .math{justify-content:flex-start;overflow-x:auto;flex-wrap:nowrap;text-align:left}
+    .math-defs{grid-template-columns:1fr}
+    .chart-wrap{padding:14px;overflow-x:auto}
+  }
+  @media (max-width:430px){
+    .technical-hero h1{font-size:2.35rem}
+    .spec-table th,.spec-table td{padding:.7rem .8rem}
+  }
+  @media (prefers-reduced-motion:reduce){.loss-line{stroke-dashoffset:0!important}.bench-bar i{transition:none}.loss-dot{opacity:.55}}
 </style>
 </head>
 <body id="top">
+<div class="atmosphere" aria-hidden="true"></div>
+<a class="skip-link" href="#main">Skip to content</a>
 <header class="site-header" data-header>
   <div class="wrap header-inner">
     <a class="brand" href="#top" aria-label="PSSA - Plastic State-Space Architecture, back to top">
@@ -1105,19 +1133,23 @@ details.datatable table{margin-top:.8rem}
   </div>
   <span class="scroll-progress" aria-hidden="true" data-scroll-progress></span>
 </header>
-<main id="main">
-<section class="dd-hero"><div class="wrap">
-<p class="kicker">Technical deep dive</p>
-<h1>How PSSA works, in full.</h1>
-<p class="lead">Every mechanism below is taken from the source and the published checkpoints: a selective diagonal state-space recurrence, a 512-slot episodic memory with hyperbolic keys, plasticity through closed-form consolidation, and a gradient harness that checks every kernel against a scalar reference on every commit.</p>
-<p class="note">Numbers on this page come from the measured checkpoint chain and the benchmark runs. Where a value is schematic (for example the softmax mix shown on the main page) it is labeled as such.</p>
+<main id="main" class="main">
+<section class="technical-hero" aria-labelledby="hero-title"><div class="wrap">
+<div class="technical-hero-copy">
+<p class="eyebrow"><span class="dot" aria-hidden="true"></span>Technical deep dive</p>
+<h1 id="hero-title">How PSSA works, <em>in full.</em></h1>
+<p class="hero-lede">Every mechanism below is taken from the source and the published checkpoints: a selective diagonal state-space recurrence, a 512-slot episodic memory with hyperbolic keys, plasticity through closed-form consolidation, and a gradient harness that checks every kernel against a scalar reference on every commit.</p>
+<p class="scope-note technical-note">Numbers on this page come from the measured checkpoint chain and the benchmark runs. Where a value is schematic (for example the softmax mix shown on the main page) it is labeled as such.</p>
+</div>
 </div></section>
 
-<section class="section" id="spec"><div class="wrap">
-<p class="kicker">01 · Specification</p>
-<h2>The whole model, measured.</h2>
-<p class="lead">A single PSSA block trains end to end. Parameter counts are read from the checkpoint header, not estimated.</p>
-<table class="spec-table"><tbody>
+<section class="section technical-section" id="spec"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">01 · Specification</p><h2>The whole model, measured.</h2></div>
+<div><p class="section-lede">A single PSSA block trains end to end. Parameter counts are read from the checkpoint header, not estimated.</p></div>
+</div>
+<div class="technical-body">
+<div class="technical-panel glass"><table class="spec-table"><tbody>
 <tr><th>Trainable parameters</th><td><b>1,544,704</b> (matched transformer baseline: 1,541,120)</td></tr>
 <tr><th>Vocabulary</th><td><b>2,048</b> byte-pair tokens</td></tr>
 <tr><th>Latent width</th><td><b>256</b> channels</td></tr>
@@ -1126,21 +1158,24 @@ details.datatable table{margin-top:.8rem}
 <tr><th>Episodic memory</th><td><b>512 slots</b>, 32-d keys, 256-d values, fixed capacity</td></tr>
 <tr><th>Plastic adapter</th><td><b>rank 16</b>, updated every token; consolidated by a closed-form ridge step</td></tr>
 <tr><th>ML framework</th><td><b>none</b>. The linear algebra is written directly; gradients are checked numerically.</td></tr>
-</tbody></table>
-<p class="note">Checkpoint header: <span class="rm">model=pssa parameters=1544704 vocab=2048</span>, read from the published 64-checkpoint chain.</p>
+</tbody></table></div>
+<p class="technical-note">Checkpoint header: <span class="rm">model=pssa parameters=1544704 vocab=2048</span>, read from the published 64-checkpoint chain.</p>
+</div>
 </div></section>
 
-<section class="section" id="memory"><div class="wrap">
-<p class="kicker">02 · Episodic memory</p>
-<h2>Keys on a hyperbolic ball, values in flat space.</h2>
-<p class="lead">Each of the 512 slots holds a key on the Poincaré ball and a value in ordinary Euclidean space. Distance on the ball grows sharply near the boundary, so broadly reused context sits near the origin and one-off episodes sit near the edge; a single distance function separates them without any learned metric.</p>
+<section class="section technical-section" id="memory"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">02 · Episodic memory</p><h2>Keys on a hyperbolic ball, values in flat space.</h2></div>
+<div><p class="section-lede">Each of the 512 slots holds a key on the Poincaré ball and a value in ordinary Euclidean space. Distance on the ball grows sharply near the boundary, so broadly reused context sits near the origin and one-off episodes sit near the edge; a single distance function separates them without any learned metric.</p></div>
+</div>
+<div class="technical-body">
 <div class="math">
 <span class="rm" style="font-style:italic">d</span><sub>H</sub>(<i>u</i>, <i>v</i>) <span class="op">=</span> <span class="op">arccosh</span><span class="par">(</span>1 <span class="op">+</span>
 <span class="frac"><span class="num">2&thinsp;‖<i>u</i> − <i>v</i>‖<sup>2</sup></span><span class="den">(1 − ‖<i>u</i>‖<sup>2</sup>)(1 − ‖<i>v</i>‖<sup>2</sup>)</span></span>
 <span class="par">)</span>
 </div>
 <div class="math-defs"><div><b>d<sub>H</sub></b> — hyperbolic distance on the Poincaré ball.</div><div><b>‖·‖</b> — Euclidean norm of the slot key.</div><div><b>arccosh</b> — inverse hyperbolic cosine; real-valued on [1, ∞).</div></div>
-<p class="lead">The read is an exact scan. A query is formed from the current token embedding and the recurrent state, every occupied key is scored, and a softmax over negative distance turns the scores into a mix:</p>
+<p class="section-lede">The read is an exact scan. A query is formed from the current token embedding and the recurrent state, every occupied key is scored, and a softmax over negative distance turns the scores into a mix:</p>
 <div class="math">
 <i>q</i><sub>h</sub> <span class="op">=</span> <span class="op">proj</span><span class="par">(</span><i>W</i><sub>qx</sub>&thinsp;<i>x</i><sub>t</sub> <span class="op">+</span> <i>W</i><sub>qh</sub>&thinsp;<i>h</i><sub>t</sub><span class="par">)</span>
 </div>
@@ -1150,14 +1185,17 @@ details.datatable table{margin-top:.8rem}
 <i>m</i> <span class="op">=</span> <span class="big">Σ</span><sub>s</sub>&thinsp;<i>w</i><sub>s</sub>&thinsp;<i>v</i><sub>s</sub>
 </div>
 <div class="math-defs"><div><b>q<sub>h</sub></b> — state-conditioned query, projected to the ball.</div><div><b>k<sub>s</sub></b>, <b>v<sub>s</sub></b> — key and value of slot s.</div><div><b>τ<sub>mem</sub></b> — temperature; smaller values sharpen the mix.</div><div><b>m</b> — the retrieved value, blended into the block output.</div></div>
-<p class="lead">The write path is round-robin by design: a pointer advances through the 512 slots one per token, and two gates decide whether the target slot may actually be overwritten. A novelty gate blocks writes that carry nothing new, and a refractory counter protects a recently written slot from immediate erasure. Capacity is therefore fixed and forgetting is explicit, not a side effect of a growing cache.</p>
-<p class="lead">An optional flag, <span class="rm">--memory-top-k K</span>, still scans all 512 keys but mixes only the K best values. It exists for speed experiments; exact full-scan read is the default and the benchmarked path.</p>
+<p class="section-lede">The write path is round-robin by design: a pointer advances through the 512 slots one per token, and two gates decide whether the target slot may actually be overwritten. A novelty gate blocks writes that carry nothing new, and a refractory counter protects a recently written slot from immediate erasure. Capacity is therefore fixed and forgetting is explicit, not a side effect of a growing cache.</p>
+<p class="section-lede">An optional flag, <span class="rm">--memory-top-k K</span>, still scans all 512 keys but mixes only the K best values. It exists for speed experiments; exact full-scan read is the default and the benchmarked path.</p>
+</div>
 </div></section>
 
-<section class="section" id="recurrence"><div class="wrap">
-<p class="kicker">03 · Selective recurrence</p>
-<h2>One state, updated in place.</h2>
-<p class="lead">The core is a selective diagonal state-space recurrence in the Mamba family: the transition is diagonal, the step size and the input map are functions of the current token, and nothing outside the state is consulted.</p>
+<section class="section technical-section" id="recurrence"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">03 · Selective recurrence</p><h2>One state, updated in place.</h2></div>
+<div><p class="section-lede">The core is a selective diagonal state-space recurrence in the Mamba family: the transition is diagonal, the step size and the input map are functions of the current token, and nothing outside the state is consulted.</p></div>
+</div>
+<div class="technical-body">
 <div class="math">
 <i>δ</i><sub>t</sub> <span class="op">=</span> <span class="op">softplus</span><span class="par">(</span><i>W</i><sub>δ</sub>&thinsp;<i>x</i><sub>t</sub><span class="par">)</span>
 <span class="big">&nbsp;&nbsp;,&nbsp;&nbsp;</span>
@@ -1169,42 +1207,51 @@ details.datatable table{margin-top:.8rem}
 <i>h</i><sub>t</sub> <span class="op">=</span> <i>A</i><sub>t</sub> <span class="big">⊙</span> <i>h</i><sub>t−1</sub> <span class="op">+</span> <i>B</i><sub>t</sub> <span class="big">⊙</span> <i>x</i><sub>t</sub>
 </div>
 <div class="math-defs"><div><b>x<sub>t</sub></b> — the embedded token, 256 channels.</div><div><b>h<sub>t</sub></b> — the state, 256 × 16, carried across tokens.</div><div><b>δ<sub>t</sub></b> — per-channel step size, selecting how far the token reaches back.</div><div><b>⊙</b> — elementwise product over the 16 states per channel.</div></div>
-<p class="lead">Sixteen log-spaced time constants give the state horizons from 1.5 to 200 tokens before training moves anything, so short-range spelling and long-range topic structure coexist from initialization. Because A is diagonal and the recurrence is written scalar-first, every batched and parallel kernel has a plain reference implementation to be checked against.</p>
+<p class="section-lede">Sixteen log-spaced time constants give the state horizons from 1.5 to 200 tokens before training moves anything, so short-range spelling and long-range topic structure coexist from initialization. Because A is diagonal and the recurrence is written scalar-first, every batched and parallel kernel has a plain reference implementation to be checked against.</p>
+</div>
 </div></section>
 
-<section class="section" id="plasticity"><div class="wrap">
-<p class="kicker">04 · Plasticity</p>
-<h2>Two speeds of change, one closed-form fold.</h2>
-<p class="lead">A per-token gate decides how much of the memory read is admitted, and a rank-16 adapter carries the fast path:</p>
+<section class="section technical-section" id="plasticity"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">04 · Plasticity</p><h2>Two speeds of change, one closed-form fold.</h2></div>
+<div><p class="section-lede">A per-token gate decides how much of the memory read is admitted, and a rank-16 adapter carries the fast path:</p></div>
+</div>
+<div class="technical-body">
 <div class="math">
 <i>g</i> <span class="op">=</span> <span class="op">sigmoid</span><span class="par">(</span><i>w</i><sub>gate</sub> · <i>x</i><sub>t</sub><span class="par">)</span>
 <span class="big">&nbsp;&nbsp;,&nbsp;&nbsp;</span>
 <i>A</i><span class="par">(</span><i>x</i><sub>t</sub><span class="par">)</span> <span class="op">=</span> <i>W</i><sub>2</sub>&thinsp;<span class="op">silu</span><span class="par">(</span><i>W</i><sub>1</sub>&thinsp;<i>x</i><sub>t</sub><span class="par">)</span>
 </div>
-<p class="lead">At consolidation boundaries, the statistics the adapter accumulated are folded back into the base transition matrix by a ridge solve:</p>
+<p class="section-lede">At consolidation boundaries, the statistics the adapter accumulated are folded back into the base transition matrix by a ridge solve:</p>
 <div class="math">
 <i>A</i><sub>base</sub> <span class="op">←</span> <i>A</i><sub>base</sub> <span class="op">+</span>
 <span class="par">(</span><i>H</i><sup>T</sup><i>H</i> <span class="op">+</span> <i>λ</i><span class="op">I</span><span class="par">)</span><sup>−1</sup>
 <i>H</i><sup>T</sup>&thinsp;Δ<i>H</i>
 </div>
 <div class="math-defs"><div><b>H</b> — the accumulated input statistics since the last boundary.</div><div><b>ΔH</b> — what the fast path changed for those inputs.</div><div><b>λ</b> — the ridge penalty, keeping the solve well-conditioned.</div><div><b>(H<sup>T</sup>H + λI)<sup>−1</sup>H<sup>T</sup></b> — the closed-form ridge solution; no optimizer state, no learning-rate schedule.</div></div>
-<p class="lead">The result is a model whose reading changes what its next read retrieves: memory writes are gated by novelty and refractory counters, and the fast adapter shifts behavior between consolidation points. The scope is honest: this is measured on a 12.7M-token run, not claimed as a general training recipe.</p>
+<p class="section-lede">The result is a model whose reading changes what its next read retrieves: memory writes are gated by novelty and refractory counters, and the fast adapter shifts behavior between consolidation points. The scope is honest: this is measured on a 12.7M-token run, not claimed as a general training recipe.</p>
+</div>
 </div></section>
 
-<section class="section" id="verification"><div class="wrap">
-<p class="kicker">05 · Verification</p>
-<h2>Every shortcut has a reference.</h2>
-<p class="lead">A scalar reference path computes each gradient by hand, one element at a time. Every batched and parallel kernel is finite-differenced against it on every commit, and the harness fails the build on disagreement.</p>
+<section class="section technical-section" id="verification"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">05 · Verification</p><h2>Every shortcut has a reference.</h2></div>
+<div><p class="section-lede">A scalar reference path computes each gradient by hand, one element at a time. Every batched and parallel kernel is finite-differenced against it on every commit, and the harness fails the build on disagreement.</p></div>
+</div>
+<div class="technical-body">
 <div class="math">
 <span class="op">max</span>&thinsp;| ∂<sub>batched</sub> − ∂<sub>scalar</sub> | <span class="op">≈</span> <b class="rm">2.98 × 10<sup>−8</sup></b>
 </div>
-<p class="lead">The measured maximum disagreement across the kernel set is 2.98 × 10<sup>−8</sup>, within the 3 × 10<sup>−8</sup> gate. Finite-difference spot checks run alongside. This is why the results below can be quoted as model behavior rather than as artifacts of a fast-but-wrong kernel.</p>
+<p class="section-lede">The measured maximum disagreement across the kernel set is 2.98 × 10<sup>−8</sup>, within the 3 × 10<sup>−8</sup> gate. Finite-difference spot checks run alongside. This is why the results below can be quoted as model behavior rather than as artifacts of a fast-but-wrong kernel.</p>
+</div>
 </div></section>
 
-<section class="section" id="training"><div class="wrap">
-<p class="kicker">06 · Training setup</p>
-<h2>One epoch, 64 checkpoints, a matched baseline.</h2>
-<p class="lead">PSSA trains on a 12.7M-token WikiText-103 slice (64 links, roughly 199k tokens per checkpoint) on a single Tesla T4, in a 64-checkpoint chain. The baseline is a transformer trained on the same corpus at matched parameters (1,541,120 vs 1,544,704), same tokenizer, same held-out slice of 198,939 unseen tokens.</p>
+<section class="section technical-section" id="training"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">06 · Training setup</p><h2>One epoch, 64 checkpoints, a matched baseline.</h2></div>
+<div><p class="section-lede">PSSA trains on a 12.7M-token WikiText-103 slice (64 links, roughly 199k tokens per checkpoint) on a single Tesla T4, in a 64-checkpoint chain. The baseline is a transformer trained on the same corpus at matched parameters (1,541,120 vs 1,544,704), same tokenizer, same held-out slice of 198,939 unseen tokens.</p></div>
+</div>
+<div class="technical-body">
 <div class="chart-wrap">
 <div class="loss-tip" data-loss-tip></div>
 <svg class="loss-svg" viewBox="0 0 900 300" role="img" aria-label="Training cross-entropy across the 64-checkpoint chain, falling from 5.73 to 3.98">
@@ -1214,31 +1261,36 @@ details.datatable table{margin-top:.8rem}
 <text x="34" y="292" class="loss-tick">checkpoint 1</text>
 <text x="866" y="292" text-anchor="end" class="loss-tick">checkpoint 64</text>
 </svg>
-<p class="note">Training cross-entropy per checkpoint, from the published checkpoint chain. Hover a point for the exact value.</p>
+<p class="technical-note">Training cross-entropy per checkpoint, from the published checkpoint chain. Hover a point for the exact value.</p>
 <details class="datatable"><summary>Inspect the sampled data table</summary>
 <table class="spec-table"><thead><tr><th>Checkpoint</th><th>Loss</th><th>Tokens</th><th>Updates</th></tr></thead><tbody>
 <tr><td>1</td><td><b>5.733</b></td><td>199059</td><td>451</td></tr><tr><td>5</td><td><b>4.617</b></td><td>198983</td><td>458</td></tr><tr><td>9</td><td><b>4.388</b></td><td>198975</td><td>456</td></tr><tr><td>13</td><td><b>4.279</b></td><td>199101</td><td>447</td></tr><tr><td>17</td><td><b>4.208</b></td><td>198989</td><td>457</td></tr><tr><td>21</td><td><b>4.168</b></td><td>199038</td><td>452</td></tr><tr><td>25</td><td><b>4.221</b></td><td>198851</td><td>471</td></tr><tr><td>29</td><td><b>4.076</b></td><td>198986</td><td>454</td></tr><tr><td>33</td><td><b>4.028</b></td><td>198844</td><td>468</td></tr><tr><td>37</td><td><b>3.960</b></td><td>199093</td><td>451</td></tr><tr><td>41</td><td><b>3.970</b></td><td>198997</td><td>460</td></tr><tr><td>45</td><td><b>3.953</b></td><td>198966</td><td>458</td></tr><tr><td>49</td><td><b>3.907</b></td><td>198905</td><td>465</td></tr><tr><td>53</td><td><b>3.897</b></td><td>198963</td><td>460</td></tr><tr><td>57</td><td><b>3.936</b></td><td>198863</td><td>469</td></tr><tr><td>61</td><td><b>3.928</b></td><td>198986</td><td>455</td></tr>
 </tbody></table></details>
 </div>
+</div>
 </div></section>
 
-<section class="section" id="results"><div class="wrap">
-<p class="kicker">07 · Results</p>
-<h2>Measured, on the same corpus, at matched parameters.</h2>
-<p class="lead">Final checkpoints, 1.54M parameters each. Bars animate on scroll; lower is better for cross-entropy and perplexity, higher for generation speed.</p>
-<table class="spec-table results-table"><thead><tr><th>Metric</th><th>PSSA</th><th>Transformer</th><th style="width:30%">Gap</th></tr></thead><tbody>
+<section class="section technical-section" id="results"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">07 · Results</p><h2>Measured, on the same corpus, at matched parameters.</h2></div>
+<div><p class="section-lede">Final checkpoints, 1.54M parameters each. Bars animate on scroll; lower is better for cross-entropy and perplexity, higher for generation speed.</p></div>
+</div>
+<div class="technical-body">
+<div class="technical-panel glass"><table class="spec-table results-table"><thead><tr><th>Metric</th><th>PSSA</th><th>Transformer</th><th style="width:30%">Gap</th></tr></thead><tbody>
 <tr><th>Held-out cross-entropy</th><td><b>3.997</b></td><td>4.429</td><td><div class="bench-bar" style="--w:9.7%"><i></i></div></td></tr>
 <tr><th>Held-out perplexity</th><td><b>54.4</b></td><td>83.8</td><td><div class="bench-bar" style="--w:35%"><i></i></div></td></tr>
 <tr><th>Generation speed, same CPU</th><td><b>~12×</b></td><td>1×</td><td><div class="bench-bar" style="--w:92%"><i></i></div></td></tr>
 <tr><th>Training cross-entropy</th><td><b>3.98</b></td><td>4.43</td><td><div class="bench-bar" style="--w:10%"><i></i></div></td></tr>
-</tbody></table>
-<p class="note">Numbers are from the final checkpoints of each run, scored on the identical held-out slice of 198,939 tokens.</p>
+</tbody></table></div>
+<p class="technical-note">Numbers are from the final checkpoints of each run, scored on the identical held-out slice of 198,939 tokens.</p>
+</div>
 </div></section>
 
-<section class="section" id="limits"><div class="wrap">
-<p class="kicker">08 · Scope and limits</p>
-<h2>What this is, and is not.</h2>
-<p class="lead">PSSA is a 1.54M-parameter research prototype, trained once on a small corpus. It is not a general-purpose model, and the benchmarks compare it to one baseline at matched size, not to frontier systems. The claims that are load-bearing are the ones that are checkable: exact full-scan memory reads, a diagonal recurrence written scalar-first, closed-form consolidation, and a gradient harness with a measured 2.98 × 10<sup>−8</sup> maximum disagreement. One seed, one run: the checkpoint chain is published so every number above can be re-derived.</p>
+<section class="section technical-section" id="limits"><div class="wrap">
+<div class="section-head split">
+<div><p class="section-kicker">08 · Scope and limits</p><h2>What this is, and is not.</h2></div>
+<div><p class="section-lede">PSSA is a 1.54M-parameter research prototype, trained once on a small corpus. It is not a general-purpose model, and the benchmarks compare it to one baseline at matched size, not to frontier systems. The claims that are load-bearing are the ones that are checkable: exact full-scan memory reads, a diagonal recurrence written scalar-first, closed-form consolidation, and a gradient harness with a measured 2.98 × 10<sup>−8</sup> maximum disagreement. One seed, one run: the checkpoint chain is published so every number above can be re-derived.</p></div>
+</div>
 </div></section>
 </main>
 <footer class="site-footer">
@@ -1249,10 +1301,10 @@ details.datatable table{margin-top:.8rem}
         <span class="footer-wordmark"><strong>PSSA</strong><span>- Plastic State-Space Architecture</span></span>
       </div>
       <nav class="footer-nav" aria-label="Footer">
-        <a href="#overview">Overview</a><span class="sep" aria-hidden="true">/</span>
-        <a href="#how">How It Works</a><span class="sep" aria-hidden="true">/</span>
+        <a href="index.html#overview">Overview</a><span class="sep" aria-hidden="true">/</span>
+        <a href="index.html#how">How It Works</a><span class="sep" aria-hidden="true">/</span>
         <a href="technical.html">Technical deep dive</a><span class="sep" aria-hidden="true">/</span>
-        <a href="#results">Results</a><span class="sep" aria-hidden="true">/</span>
+        <a href="index.html#results">Results</a><span class="sep" aria-hidden="true">/</span>
         <a href="https://github.com/Sparticle62ops/pssa" target="_blank" rel="noopener noreferrer">GitHub</a>
       </nav>
     </div>
@@ -1264,6 +1316,19 @@ details.datatable table{margin-top:.8rem}
 </footer>
 <script>
 (function(){
+var root = document.documentElement;
+var header = document.querySelector('[data-header]');
+var progress = document.querySelector('[data-scroll-progress]');
+function onScroll(){
+  var y = window.scrollY || root.scrollTop || 0;
+  if (header) header.classList.toggle('is-scrolled', y > 8);
+  if (progress){
+    var height = root.scrollHeight - window.innerHeight;
+    progress.style.transform = 'scaleX(' + (height > 0 ? Math.min(y / height, 1) : 0) + ')';
+  }
+}
+window.addEventListener('scroll', onScroll, {passive:true});
+onScroll();
 var io = new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});},{threshold:.25});
 document.querySelectorAll('.section, .chart-wrap, .results-table tr').forEach(function(el){io.observe(el);});
 var tip = document.querySelector('[data-loss-tip]');
